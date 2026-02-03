@@ -30,10 +30,14 @@ class bigint{
 	const std::string getnum()const; //two const!!
 	
 	bigint operator>>(unsigned int shift);  //unsigned int shift
+	bigint operator>>(const bigint& shift);
 	bigint operator<<(unsigned int shift);
+	bigint operator<<(const bigint& shift);
 	 
 	bigint	operator<<=(unsigned int shift);  //dont forget these two
+	bigint	operator<<=(const bigint& shift);
 	bigint	operator>>=(unsigned int shift);
+	bigint	operator>>=(const bigint& shift);
         
         
 };

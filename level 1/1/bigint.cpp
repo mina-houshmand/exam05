@@ -1,4 +1,5 @@
 #include "bigint.hpp"
+#include <cstdlib>
 
 bigint::bigint(){           //dont forget bigint:: at first
 	_number = "0";
@@ -152,6 +153,22 @@ bigint bigint::operator<<=(unsigned int shift){
 bigint bigint::operator>>=(unsigned int shift){
 	*this = *this >> shift;
 	return *this;
+}
+
+bigint bigint::operator<<(const bigint& shift){
+	return *this << (unsigned int)std::atoi(shift.getnum().c_str());
+}
+
+bigint bigint::operator>>(const bigint& shift){
+	return *this >> (unsigned int)std::atoi(shift.getnum().c_str());
+}
+
+bigint bigint::operator<<=(const bigint& shift){
+	return *this <<= (unsigned int)std::atoi(shift.getnum().c_str());
+}
+
+bigint bigint::operator>>=(const bigint& shift){
+	return *this >>= (unsigned int)std::atoi(shift.getnum().c_str());
 }
 
 std::ostream& operator<<(std::ostream& os, bigint toPrint){
