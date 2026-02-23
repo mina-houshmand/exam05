@@ -9,7 +9,7 @@ class searchable_array_bag : public searchable_bag, public array_bag
 	public:
 			searchable_array_bag(){}
 			searchable_array_bag(const array_bag& bag_) : array_bag(bag_) {}
-			~searchable_array_bag(){}
+			virtual ~searchable_array_bag(){}
 			searchable_array_bag(const searchable_array_bag& copy): array_bag(copy)
 			{
 				// copy each member manually

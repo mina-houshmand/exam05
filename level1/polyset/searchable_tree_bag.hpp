@@ -10,7 +10,7 @@ class searchable_tree_bag : public searchable_bag, public tree_bag
 			searchable_tree_bag(){}
 			searchable_tree_bag(const tree_bag& bag_) : tree_bag(bag_) {}
 			searchable_tree_bag(const searchable_tree_bag& copy) : tree_bag(copy) {}
-			~searchable_tree_bag(){}
+			virtual ~searchable_tree_bag(){}
 			searchable_tree_bag& operator=(const searchable_tree_bag& other)
 			{
 				if (this == &other)
@@ -22,7 +22,7 @@ class searchable_tree_bag : public searchable_bag, public tree_bag
 
 			bool has(int item) const
 			{
-				node* curr = tree;
+				node *curr = tree;
 
 				while(curr)
 				{

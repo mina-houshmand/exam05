@@ -10,7 +10,7 @@ class set
 
 	public:
 		set(searchable_bag& baggy): bag_(baggy) {}
-		~set(){}
+		virtual ~set(){}
 	
 	void insert (int item)
 	{
@@ -37,10 +37,12 @@ class set
 		bag_.clear();
 	}
 
-	void has(int item)
+	bool has(int item) const
 	{
-		bag_.has(item);
+		return bag_.has(item);
 	}
 
-	const searchable_bag& get_bag()const{ return bag_;}
+	const searchable_bag& get_bag()const{ 
+		return bag_;
+	}
 };

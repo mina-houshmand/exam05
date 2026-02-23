@@ -38,30 +38,30 @@ int main(int argc, char **argv) {
 
   set sa(*a);
   set st(*t);
-  // for (int i = 1; i < argc; i++) {
-  //   st.insert(atoi(argv[i]));
-  //   sa.insert(atoi(argv[i]));
+  for (int i = 1; i < argc; i++) {
+    st.insert(atoi(argv[i]));
+    sa.insert(atoi(argv[i]));
 
-  //   sa.has(atoi(argv[i]));
-  //   sa.print();
-  //   sa.get_bag().print();
-  //   st.print();
-  //   sa.clear();
-  //   int arr[] = {1,2,3,4,};
-  //   sa.insert(arr,4);
-    // std::cout << "sa print: ";
-    // sa.print();
-    // std::cout << std::endl;
-		// std::cout << "extra tests for set " << std::endl;
-    // // searchable_bag *
-    // a->clear();
-    // set test_s(*a);
-    // test_s.insert(99);
-    // test_s.insert(arr, 4);
-    // test_s.insert(99);
-    // test_s.print();
-    // test_s.get_bag().print();
-  // }
+    sa.has(atoi(argv[i]));
+    sa.print();
+    sa.get_bag().print();
+    st.print();
+    sa.clear();
+    int arr[] = {1,2,3,4,};
+    sa.insert(arr,4);
+    std::cout << "sa print: ";
+    sa.print();
+    std::cout << std::endl;
+		std::cout << "extra tests for set " << std::endl;
+    // searchable_bag *
+    a->clear();
+    set test_s(*a);
+    test_s.insert(99);
+    test_s.insert(arr, 4);
+    test_s.insert(99);
+    test_s.print();
+    test_s.get_bag().print();
+  }
 
   return 0;
 }
