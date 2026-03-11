@@ -4,13 +4,14 @@
 
 typedef struct 
 {
-    int		rows;
-	int		cols;
-    char	empty;	
+    	int	rows;
+	int	cols;
+   	char	empty;	
 	char 	obs;
 	char 	fill;
-    char 	**grid;
+   	char 	**grid;
 } Map;
+
 
 // { return a < b ? (a < c ? a : c) : (b < c ? b : c); }
 int min3(int a, int b, int c) {
@@ -103,13 +104,13 @@ void solve(Map *m)
 	int bi = 0;
 	int	bj = 0;
     
-	for (int i = 0; i < R ; i++)
-	{	for (int j = 0; j < C; j++)
-		{
+	for (int i = 0 ; i < R; i++)
+	{	
+	    for (int j = 0; j < C; j++){
     	    if (m->grid[i][j] == m->obs) 
-				dp[i][j] = 0;
+		     	dp[i][j] = 0;
     	    else 
-				dp[i][j] = (i && j ? min3(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]) : 0) + 1;
+		     	dp[i][j] = (i && j ? min3(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]) : 0) + 1;
     	    
 			if (dp[i][j] > best){
 				best = dp[i][j];
@@ -121,7 +122,7 @@ void solve(Map *m)
 	
 	for (int i = bi - best + 1; i <= bi; i++)
     {
-		for (int j = bj - best + 1; j<=bj; j++)
+		for (int j = bj - best + 1; j <= bj; j++)
 			m->grid[i][j] = m->fill;
 	}
 	

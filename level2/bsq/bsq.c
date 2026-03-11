@@ -90,7 +90,6 @@ void solve(Map *m)
 	
 	free(dp);
 	
-
 }
 
 
