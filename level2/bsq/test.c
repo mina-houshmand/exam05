@@ -1,6 +1,6 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>  //**
 
 typedef struct{
 int rows;
@@ -11,15 +11,10 @@ char fill;
 char **grid;
 } Map;
 
-
-int min(int a, int b, int c){
-	return (a < b ? (a < c ? a : c) : (b < c ? b : c));
-
-}
 void free_map(Map *m){
 	if (!m)
 		return;
-	for (int i = 0; i < m->rows; i++){
+	for(int i = 0; i < m->rows; i++){
 		free(m->grid[i]);
 	}
 	free(m->grid);
@@ -32,99 +27,102 @@ int validate(const Map *m){
 	if (m->empty == m->obs || m->empty == m->fill || m->obs == m->fill)
 		return 0;
 	for (int i = 0; i < m->rows; i++){
-		for (int j = 0; j < m->cols; j++)
-			if (m->grid[i][j] != m->empty && m->grid[i][j] != m-> obs)
+		for(int j = 0; j < m->cols; j++)
+			if (m->grid[i][j] != m->empty && m->grid[i][j] != m->obs)   //&&
 				return 0;
 	}
 	return 1;
 }
 
-Map *read_map(const char *av){     //const
+int min3(int a, int b, int c){
+	return ( a < b ? ( a < c ? a : c ) : ( b < c ? b : c));
+}
+
+Map *read_map(const char *av){
 	FILE *f = av ? fopen(av, "r") : stdin;
-	if (!f)
+	if (f == 0)
 		return NULL;
-	Map *m = calloc(1, sizeof(Map));
-	if (fscanf(f, "%d %c %c %c\n", &m->rows, &m->empty, &m->obs, &m->fill) != 4)
-		goto err;
-	m->grid = malloc(m->rows * sizeof(char*));
-	
-	for (int i = 0; i < m->rows; i++){
-		size_t len = 0;
-		if(getline(&m->grid[i], &len, f) < 0)
-			goto err;
 		
+	//map allocation
+	Map *m = calloc(1, sizeof(Map));
+	if(fscanf(f, "%d %c %c %c\n", &m->rows, &m->empty, &m->obs, &m->fill) != 4)  //fscanf
+		goto err;
+	//grid allocation
+	m->grid = malloc(m->rows * sizeof(char*));
+	for(int i = 0; i < m->rows; i++){
+		size_t len =0;
+		if (getline(&m->grid[i], &len, f) < 0)
+			goto err;
+			
 		int collen = 0;
 		while (m->grid[i][collen] && m->grid[i][collen] != '\n')
 			collen++;
 		m->grid[i][collen] = '\0';
-		
 		if (!i)
 			m->cols = collen;
 		else if (m->cols != collen)
 			goto err;
+		
 	}
 	if (f != stdin)
 		fclose(f);
 	return m;
 err:
-	if(f != stdin)
+	if (f != stdin)
 		fclose(f);
 	free_map(m);
 	return NULL;
 }
 
-
 void solve(Map *m){
-
-int R = m->rows;
-int C = m->cols;
-int **dp = calloc(R , sizeof(*dp));
-
-for (int i = 0; i < R; i++){   //only one for
+	int R = m->rows;
+	int C = m->cols;
+	int **dp = calloc(R, sizeof(*dp));  //int
+	
+	for (int i = 0; i < R; i++)
 		dp[i] = calloc(C, sizeof(*dp[i]));
-	}
 	
-int best = 0;
-int bi = 0;
-int bj = 0;
-
-for (int i = 0; i < R; i++){
-	for (int j = 0; j < C; j++){
-		if (m->grid[i][j] == m->obs)   // this == 
-			dp[i][j] = 0;
-		else
-			dp[i][j] =( i && j ?  min(dp[i -1][j], dp[i][j - 1], dp[i -1][j -1]) : 0) + 1;
+	int best = 0;
+	int bi = 0;
+	int bj = 0;
 	
-		if (dp[i][j] > best){    //this part
-			best = dp[i][j];
-			bi = i;
-			bj = j;
-	}
-}
-
-for (int i =  bi - best  + 1; i <= bi; i++){   //bi - best + 1
-	for(int j =  bj -best + 1; j <= bj; j++){
-			m->grid[i][j] = m->fill;    //this
+	for ( int i = 0; i < R; i++){
+		for (int j = 0; j < C; j++){
+			if (m->grid[i][j] == m->obs)
+				dp[i][j] = 0;
+			else
+				dp[i][j] = (i && j ? min3(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]) : 0 ) + 1;  //dp
+			if (dp[i][j] > best){
+				best = dp[i][j];
+				bi = i;
+				bj = j; 
+			}
 		}
-		
+	}  //ino beband
+	for (int i = bi - best + 1; i <= bi; i++){
+		for (int j = bj - best + 1; j <= bj; j++){
+			m->grid[i][j] = m->fill;
+		}
 	}
-}
-for (int i = 0; i < R; i++)   //this
+	
+	for (int i = 0; i < R; i++)
 		free(dp[i]);
 	free(dp);
 
+
 }
 
-void process(char *av){
+void	process(char *av){
 	Map *m = read_map(av);
 	if (!m || !validate(m)){
-		fprintf(stderr, "map failed\n");
-		free(m);
+		fprintf(stderr, "error map\n");
+		free_map(m);
 		return;
 	}
 	solve(m);
-	for (int i = 0; i < m->rows; i++)
+	for(int i = 0; i < m->rows; i++){
 		fprintf(stdout, "%s\n", m->grid[i]);
+	}
 	free_map(m);
 }
 
@@ -132,12 +130,8 @@ int main(int ac, char **av){
 	if (ac < 2)
 		process(NULL);
 	else{
-		for (int i = 1; i < ac; i++)    //i = 1
+		for (int i = 1; i < ac; i++)  //i = 1
 			process(av[i]);
 	}
 	return 0;
 }
-
-
-//free_map 3 use => 2 in process one in err:
-//free 5 use => 3 in free_map 2 in solve

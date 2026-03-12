@@ -5,6 +5,10 @@
 
 int main(int argc, char **argv) {
 
+    if (argc != 4) {
+        fprintf(stderr, "Usage: %s width height iterations\n", argv[0]);
+        return 1;
+    }
 	(void)argc;                                                                      // we ignore the argc
     int w = atoi(argv[1]);                                                         // we save the width
     int h = atoi(argv[2]);                                                         // we save the height
